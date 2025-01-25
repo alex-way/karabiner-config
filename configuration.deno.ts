@@ -161,7 +161,6 @@ const commonBundleIdentifiers = [
 /** Ctrl-only remapping */
 const globalKeysToRemap: FromAndToKeyCode[] = [
 	"a",
-	"b",
 	"c",
 	"f",
 	"i",
@@ -171,7 +170,17 @@ const globalKeysToRemap: FromAndToKeyCode[] = [
 	"z",
 ];
 
-const ctrlShiftKeysToRemapToCmdShift: FromAndToKeyCode[] = ["n", "s", "r", "t"];
+const ctrlShiftKeysToRemapToCmdShift: FromAndToKeyCode[] = [
+	"b",
+	"n",
+	"o",
+	"s",
+	"r",
+	"t",
+	"equal_sign",
+	"hyphen",
+	"0",
+];
 
 const ctrlShiftKeysToRemapToAltShift: FromAndToKeyCode[] = [
 	"left_arrow",
@@ -192,10 +201,12 @@ writeToProfile("Default profile", [
 		),
 	),
 	rule("vsCode Remapping").manipulators(
-		// Ctrl + space
 		[
+			// Intellisense
 			map("spacebar", "left_control").to("i", "left_command"),
+			// Toggle line comment
 			map("/", "left_control").to("/", "command"),
+			// Toggle terminal visibility
 			map("'", "left_control").to("`", "left_control"),
 		].map((m) => m.condition(ifApp(vsCode))),
 	),

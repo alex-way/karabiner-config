@@ -193,9 +193,11 @@ const teamsKeysToRemap: FromAndToKeyCode[] = ["h", "m", "o"];
 
 writeToProfile("Default profile", [
 	rule("Ghostty Remapping").manipulators(
-		[map("c", "left_control").to("c", "left_control")].map((m) =>
-			m.condition(ifApp(ghostty)),
-		),
+		[
+			map("c", "left_control").to("c", "left_control"),
+			map("r", "left_control").to("r", "left_control"),
+			map("a", "left_control").to("a", "left_control"),
+		].map((m) => m.condition(ifApp(ghostty))),
 	),
 	rule("Teams Remapping").manipulators(
 		teamsKeysToRemap.map((key) =>
@@ -208,6 +210,8 @@ writeToProfile("Default profile", [
 			map("spacebar", "left_control").to("i", "left_command"),
 			// Toggle line comment
 			map("/", "left_control").to("/", "command"),
+			map("r", "left_control").to("r", "left_control"),
+			map("a", "left_control").to("a", "left_control"),
 		].map((m) => m.condition(ifApp(vsCode))),
 	),
 	rule("Windows Remapping").manipulators([

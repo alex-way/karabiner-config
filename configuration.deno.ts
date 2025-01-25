@@ -192,9 +192,11 @@ const ctrlShiftKeysToRemapToAltShift: FromAndToKeyCode[] = [
 const teamsKeysToRemap: FromAndToKeyCode[] = ["h", "m", "o"];
 
 writeToProfile("Default profile", [
-	rule("Ghostty Remapping").manipulators([
-		map("c", "left_control").to("c", "left_control").condition(ifApp(ghostty)),
-	]),
+	rule("Ghostty Remapping").manipulators(
+		[map("c", "left_control").to("c", "left_control")].map((m) =>
+			m.condition(ifApp(ghostty)),
+		),
+	),
 	rule("Teams Remapping").manipulators(
 		teamsKeysToRemap.map((key) =>
 			map(key, "⌃⇧").to(key, "⌘⇧").condition(ifApp(teams)),
@@ -206,8 +208,6 @@ writeToProfile("Default profile", [
 			map("spacebar", "left_control").to("i", "left_command"),
 			// Toggle line comment
 			map("/", "left_control").to("/", "command"),
-			// Toggle terminal visibility
-			map("'", "left_control").to("`", "left_control"),
 		].map((m) => m.condition(ifApp(vsCode))),
 	),
 	rule("Windows Remapping").manipulators([

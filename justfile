@@ -1,0 +1,2 @@
+deploy:
+    deno run --allow-env --allow-read --allow-write configuration.deno.ts

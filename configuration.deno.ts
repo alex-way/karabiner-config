@@ -1,0 +1,228 @@
+import {
+	type FromAndToKeyCode,
+	ifApp,
+	map,
+	rule,
+	writeToProfile,
+} from "https://deno.land/x/karabinerts@1.30.3/deno.ts";
+
+const vsCode = "^com.microsoft.VSCode$" as const;
+const finder = "^com.apple.finder$" as const;
+const ghostty = "^com.mitchellh.ghostty$" as const;
+const teams = "^com.microsoft.teams2$" as const;
+
+const commonBundleIdentifiers = [
+	"^com\\.microsoft\\.rdc$",
+	"^com\\.microsoft\\.rdc\\.mac$",
+	"^com\\.microsoft\\.rdc\\.macos$",
+	"^com\\.microsoft\\.rdc\\.osx\\.beta$",
+	"^net\\.sf\\.cord$",
+	"^com\\.thinomenon\\.RemoteDesktopConnection$",
+	"^com\\.itap-mobile\\.qmote$",
+	"^com\\.nulana\\.remotixmac$",
+	"^com\\.p5sys\\.jump\\.mac\\.viewer$",
+	"^com\\.p5sys\\.jump\\.mac\\.viewer\\.web$",
+	"^com\\.teamviewer\\.TeamViewer$",
+	"^com\\.vmware\\.horizon$",
+	"^com\\.2X\\.Client\\.Mac$",
+	"^com\\.vmware\\.fusion$",
+	"^com\\.vmware\\.horizon$",
+	"^com\\.vmware\\.view$",
+	"^com\\.parallels\\.desktop$",
+	"^com\\.parallels\\.vm$",
+	"^com\\.parallels\\.desktop\\.console$",
+	"^org\\.virtualbox\\.app\\.VirtualBoxVM$",
+	"^com\\.citrix\\.XenAppViewer$",
+	"^com\\.vmware\\.proxyApp\\.",
+	"^com\\.parallels\\.winapp\\.",
+	"^org\\.macports\\.X11$",
+	"^co\\.zeit\\.hyperterm$",
+	"^co\\.zeit\\.hyper$",
+	"^io\\.alacritty$",
+	"^net\\.kovidgoyal\\.kitty$",
+	"^tv\\.parsec\\.www$",
+	vsCode,
+	finder,
+	ghostty,
+	teams,
+];
+
+// {
+//     "description": "Ctrl+(Shift)+Right/left arrow => Alt+(Shift)+Right/left arrow (Move cursor one word with selection and without selection)",
+//     "enabled": false,
+//     "manipulators": [
+//         {
+//             "conditions": [
+//                 {
+//                     "bundle_identifiers": [
+//                         "^com\\.microsoft\\.rdc$",
+//                         "^com\\.microsoft\\.rdc\\.mac$",
+//                         "^com\\.microsoft\\.rdc\\.macos$",
+//                         "^com\\.microsoft\\.rdc\\.osx\\.beta$",
+//                         "^net\\.sf\\.cord$",
+//                         "^com\\.thinomenon\\.RemoteDesktopConnection$",
+//                         "^com\\.itap-mobile\\.qmote$",
+//                         "^com\\.nulana\\.remotixmac$",
+//                         "^com\\.p5sys\\.jump\\.mac\\.viewer$",
+//                         "^com\\.p5sys\\.jump\\.mac\\.viewer\\.web$",
+//                         "^com\\.teamviewer\\.TeamViewer$",
+//                         "^com\\.vmware\\.horizon$",
+//                         "^com\\.2X\\.Client\\.Mac$",
+//                         "^com\\.vmware\\.fusion$",
+//                         "^com\\.vmware\\.horizon$",
+//                         "^com\\.vmware\\.view$",
+//                         "^com\\.parallels\\.desktop$",
+//                         "^com\\.parallels\\.vm$",
+//                         "^com\\.parallels\\.desktop\\.console$",
+//                         "^org\\.virtualbox\\.app\\.VirtualBoxVM$",
+//                         "^com\\.citrix\\.XenAppViewer$",
+//                         "^com\\.vmware\\.proxyApp\\.",
+//                         "^com\\.parallels\\.winapp\\.",
+//                         "^org\\.macports\\.X11$",
+//                         "^co\\.zeit\\.hyperterm$",
+//                         "^co\\.zeit\\.hyper$",
+//                         "^io\\.alacritty$",
+//                         "^net\\.kovidgoyal\\.kitty$",
+//                         "^tv\\.parsec\\.www$"
+//                     ],
+//                     "type": "frontmost_application_unless"
+//                 }
+//             ],
+//             "from": {
+//                 "key_code": "left_arrow",
+//                 "modifiers": {
+//                     "mandatory": ["control"],
+//                     "optional": ["shift"]
+//                 }
+//             },
+//             "to": [
+//                 {
+//                     "key_code": "left_arrow",
+//                     "modifiers": ["left_option"]
+//                 }
+//             ],
+//             "type": "basic"
+//         },
+//         {
+//             "conditions": [
+//                 {
+//                     "bundle_identifiers": [
+//                         "^com\\.microsoft\\.rdc$",
+//                         "^com\\.microsoft\\.rdc\\.mac$",
+//                         "^com\\.microsoft\\.rdc\\.macos$",
+//                         "^com\\.microsoft\\.rdc\\.osx\\.beta$",
+//                         "^net\\.sf\\.cord$",
+//                         "^com\\.thinomenon\\.RemoteDesktopConnection$",
+//                         "^com\\.itap-mobile\\.qmote$",
+//                         "^com\\.nulana\\.remotixmac$",
+//                         "^com\\.p5sys\\.jump\\.mac\\.viewer$",
+//                         "^com\\.p5sys\\.jump\\.mac\\.viewer\\.web$",
+//                         "^com\\.teamviewer\\.TeamViewer$",
+//                         "^com\\.vmware\\.horizon$",
+//                         "^com\\.2X\\.Client\\.Mac$",
+//                         "^com\\.vmware\\.fusion$",
+//                         "^com\\.vmware\\.horizon$",
+//                         "^com\\.vmware\\.view$",
+//                         "^com\\.parallels\\.desktop$",
+//                         "^com\\.parallels\\.vm$",
+//                         "^com\\.parallels\\.desktop\\.console$",
+//                         "^org\\.virtualbox\\.app\\.VirtualBoxVM$",
+//                         "^com\\.citrix\\.XenAppViewer$",
+//                         "^com\\.vmware\\.proxyApp\\.",
+//                         "^com\\.parallels\\.winapp\\.",
+//                         "^org\\.macports\\.X11$",
+//                         "^co\\.zeit\\.hyperterm$",
+//                         "^co\\.zeit\\.hyper$",
+//                         "^io\\.alacritty$",
+//                         "^net\\.kovidgoyal\\.kitty$",
+//                         "^tv\\.parsec\\.www$"
+//                     ],
+//                     "type": "frontmost_application_unless"
+//                 }
+//             ],
+//             "from": {
+//                 "key_code": "right_arrow",
+//                 "modifiers": {
+//                     "mandatory": ["control"],
+//                     "optional": ["shift"]
+//                 }
+//             },
+//             "to": [
+//                 {
+//                     "key_code": "right_arrow",
+//                     "modifiers": ["left_option"]
+//                 }
+//             ],
+//             "type": "basic"
+//         }
+//     ]
+// }
+
+/** Ctrl-only remapping */
+const globalKeysToRemap: FromAndToKeyCode[] = [
+	"a",
+	"b",
+	"c",
+	"f",
+	"i",
+	"v",
+	"w",
+	"x",
+	"z",
+];
+
+const ctrlShiftKeysToRemapToCmdShift: FromAndToKeyCode[] = ["n", "s", "r", "t"];
+
+const ctrlShiftKeysToRemapToAltShift: FromAndToKeyCode[] = [
+	"left_arrow",
+	"right_arrow",
+	"up_arrow",
+	"down_arrow",
+];
+
+const teamsKeysToRemap: FromAndToKeyCode[] = ["h", "m", "o"];
+
+writeToProfile("Default profile", [
+	rule("Ghostty Remapping").manipulators([
+		map("c", "left_control").to("c", "left_control").condition(ifApp(ghostty)),
+	]),
+	rule("Teams Remapping").manipulators(
+		teamsKeysToRemap.map((key) =>
+			map(key, "⌃⇧").to(key, "⌘⇧").condition(ifApp(teams)),
+		),
+	),
+	rule("vsCode Remapping").manipulators(
+		// Ctrl + space
+		[
+			map("spacebar", "left_control").to("i", "left_command"),
+			map("/", "left_control").to("/", "command"),
+			map("'", "left_control").to("`", "left_control"),
+		].map((m) => m.condition(ifApp(vsCode))),
+	),
+	rule("Windows Remapping").manipulators([
+		// Remapping Ctrl + key to Cmd + key
+		...globalKeysToRemap.map((key) =>
+			map(key, "left_control").to(key, "left_command"),
+		),
+		...ctrlShiftKeysToRemapToCmdShift.map((key) =>
+			map(key, "left_control", "shift").to(key, "left_command"),
+		),
+		...ctrlShiftKeysToRemapToAltShift.map((key) =>
+			map(key, "left_control", "shift").to(key, "left_option"),
+		),
+		// Redo
+		map("y", "left_control").to("z", "⌘⇧"),
+		// Lock screen
+		map("l", "left_option").to("q", "⌘⌃"),
+		// Find and Replace
+		map("h", "left_control").to("f", "⌘⌥"),
+		// Ctrl + backspace or delete
+		...(["delete_forward", "delete_or_backspace"] as const).map((key) =>
+			map(key, "left_control").to(key, "option"),
+		),
+		// Rename file mapping
+		map("f2")
+			.to("return_or_enter")
+			.condition(ifApp(finder)),
+	]),
+]);

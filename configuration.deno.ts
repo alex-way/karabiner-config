@@ -16,7 +16,6 @@ const figma = "^com.figma.Desktop$" as const;
 const globalKeysToRemap: FromAndToKeyCode[] = [
 	"a",
 	"c",
-	"d",
 	"f",
 	"i",
 	"v",
@@ -95,4 +94,9 @@ writeToProfile("Default profile", [
 			.to("return_or_enter")
 			.condition(ifApp(finder)),
 	]),
+	rule("Figma Remapping").manipulators(
+		[map("d", "left_control").to("d", "left_command")].map((m) =>
+			m.condition(ifApp(figma)),
+		),
+	),
 ]);

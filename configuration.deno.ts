@@ -10,11 +10,13 @@ const vsCode = "^com.microsoft.VSCode$" as const;
 const finder = "^com.apple.finder$" as const;
 const ghostty = "^com.mitchellh.ghostty$" as const;
 const teams = "^com.microsoft.teams2$" as const;
+const figma = "^com.figma.Desktop$" as const;
 
 /** Ctrl-only remapping */
 const globalKeysToRemap: FromAndToKeyCode[] = [
 	"a",
 	"c",
+	"d",
 	"f",
 	"i",
 	"v",

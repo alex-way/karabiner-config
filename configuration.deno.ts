@@ -70,6 +70,8 @@ writeToProfile("Default profile", [
 			map("d", "left_control").to("d", "left_control"),
 			map("up_arrow", "⌘⌃").to("up_arrow", "⌘⌥"),
 			map("down_arrow", "⌘⌃").to("down_arrow", "⌘⌥"),
+			map("up_arrow", "⌃⇧").to("up_arrow", "left_shift"),
+			map("down_arrow", "⌃⇧").to("down_arrow", "left_shift"),
 		].map((m) => m.condition(ifApp(vsCode))),
 	),
 	rule("Windows Remapping").manipulators([

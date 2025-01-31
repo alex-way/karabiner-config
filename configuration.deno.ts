@@ -99,5 +99,8 @@ writeToProfile("Default profile", [
 		map("f2")
 			.to("return_or_enter")
 			.condition(ifApp(finder)),
+		map("delete_forward")
+			.to("delete_or_backspace", "command")
+			.condition(ifApp(finder)),
 	]),
 ]);
